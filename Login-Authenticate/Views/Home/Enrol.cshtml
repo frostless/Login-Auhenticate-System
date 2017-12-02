@@ -1,0 +1,17 @@
+﻿@model Login_Authenticate.Models.EnrollmentRequest
+
+@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+
+@using (Html.BeginForm("Enrol", "Home", FormMethod.Post))
+{
+    <p>
+        <input type="submit" class="btn btn-info" name="Submit" value="Submit" />
+    </p>
+}
+
+<p>Use this area to provide additional enrollment information.</p>

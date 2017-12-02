@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Login_Authenticate;
 using Login_Authenticate.Controllers;
+using Login_Authenticate.Business;
 
 namespace Login_Authenticate.Tests.Controllers
 {
@@ -16,7 +17,7 @@ namespace Login_Authenticate.Tests.Controllers
         public void Index()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            HomeController controller = new HomeController(null);
 
             // Act
             ViewResult result = controller.Index() as ViewResult;
@@ -35,7 +36,7 @@ namespace Login_Authenticate.Tests.Controllers
             ViewResult result = controller.About() as ViewResult;
 
             // Assert
-            Assert.AreEqual("Your application description page.", result.ViewBag.Message);
+            Assert.AreEqual(string.Empty, result.ViewBag.Message);
         }
 
         [TestMethod]
@@ -50,5 +51,30 @@ namespace Login_Authenticate.Tests.Controllers
             // Assert
             Assert.IsNotNull(result);
         }
+
+        [TestMethod]
+
+        public void TestLogin_Admin_Authenticated_Should_Expect_EnrolView()
+        {
+            var customerService = new CustomerService();
+            var controller = new HomeController(customerService);
+            var result = controller.Login("google", "google") as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Enrol", result.ViewName);
+
+        }
+
+        [TestMethod]
+
+        public void TestLogin_Admin_Authenticated_Should_Expect_IndexView()
+        {
+
+            var controller = new HomeController();
+            var result = controller.Login("admin", "admin") as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Index", result.ViewName);
+
+        }
+
     }
 }
